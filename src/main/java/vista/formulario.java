@@ -5,7 +5,6 @@
  */
 package vista;
 
-
 //librerias 
 import java.sql.*;
 
@@ -18,14 +17,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.*;
 
-
 //se manda a llamar la clase que generamos en el paquete conexion
 import conexion.conexion;
 import javax.swing.JOptionPane;
+
 public class formulario extends javax.swing.JFrame {
-    
-    
-     conexion cn = new conexion();
+
+    conexion cn = new conexion();
 
     Connection con;
 
@@ -41,135 +39,118 @@ public class formulario extends javax.swing.JFrame {
     public formulario() {
         initComponents();
     }
-    
-    
- //metodo  para alta de registros
-    public void altaUsuarios() {
 
-      
-       
-     
+    //metodo  para alta de registros
+    public void altaUsuarios() {
 
         String productoNombre = this.txtProducto.getText(); //guarda producto
 
-        
-        
-        int precioProducto =  Integer.parseInt(txtPrecio.getText()); //Guarda el valor de el precio
-        
-        
+        int precioProducto = Integer.parseInt(txtPrecio.getText()); //Guarda el valor de el precio
+
         int cantidadProducto = Integer.parseInt(txtCantidad.getText()); //Guarda la cantidad del prducto 
-        
-      
-        
 
         try {
-            
-            if ( (productoNombre.equals("")) ) {//inicia if
-                
+
+            if ((productoNombre.equals(""))) {//inicia if
+
                 JOptionPane.showMessageDialog(rootPane, "Debe ingresar datos");
-                
+
             } else {
-                        
-                
-                  
-        float descuento; //se delcara variable descuento
+
+                float descuento; //se delcara variable descuento
                 float precioFinal = 0;
-        
-        
-        
-        //if else para calcular el descuento de acuero a la cantidad de piezas llevadas
-        if(cantidadProducto <= 50){
-        
+                
+                float importeInicial = 0;
+                
+                importeInicial = precioProducto * cantidadProducto;
+
+                //if else para calcular el descuento de acuero a la cantidad de piezas llevadas
+                if (importeInicial <= 50) {
+
                     precioProducto = precioProducto * cantidadProducto;
 
-         descuento = (int) (precioProducto *.05);
-         
-          precioFinal = precioProducto- descuento ;
-          String sqlAlta = "Insert INTO venta (producto,precio,cantidad,importe_final) values ('"+productoNombre+"', '"+precioProducto+"','"+cantidadProducto+"','"+precioFinal+"' )"; //variable objeto que lleva una instruccion de base de datos
-               
-                con = cn.getConnection();
-                st = con.createStatement();
-                st.executeUpdate(sqlAlta);
-                
-                  
-        String percioString= String.valueOf(precioProducto);
-        String PreciofinalString = Float.toString(precioFinal);
-        
-                
-              
-                 txtVendido.setText(productoNombre);
-                 txtimporteInicial.setText(percioString);
-                 txtDescuento.setText("5%");
-                 txtimporteFinal.setText(PreciofinalString);
-                
-         
-        }else if (cantidadProducto >=51  && cantidadProducto <100 ){
-                            precioProducto = precioProducto * cantidadProducto;
+                    descuento = (int) (precioProducto * .05);
 
-        descuento = (int) (precioProducto *0.10);
-        
-                 precioFinal = precioProducto- descuento ;
+                    precioFinal = precioProducto - descuento;
+                    String sqlAlta = "Insert INTO venta (producto,precio,cantidad,importe_final) values ('" + productoNombre + "', '" + precioProducto + "','" + cantidadProducto + "','" + precioFinal + "' )"; //variable objeto que lleva una instruccion de base de datos
 
-         String sqlAlta = "Insert INTO venta (producto,precio,cantidad,importe_final) values ('"+productoNombre+"', '"+precioProducto+"','"+cantidadProducto+"','"+precioFinal+"' )"; //variable objeto que lleva una instruccion de base de datos
-               
-                con = cn.getConnection();
-                st = con.createStatement();
-                st.executeUpdate(sqlAlta);
-                  
-        String percioString= String.valueOf(precioProducto);
-        String PreciofinalString = Float.toString(precioFinal);
-        
-                
-              
-                 txtVendido.setText(productoNombre);
-                 txtimporteInicial.setText(percioString);
-                 txtDescuento.setText("10%");
-                 txtimporteFinal.setText(PreciofinalString);
-                
-        
-        }else if (cantidadProducto >= 101){
-                                precioProducto = precioProducto * cantidadProducto;
+                    con = cn.getConnection();
+                    st = con.createStatement();
+                    st.executeUpdate(sqlAlta);
 
-       
-        descuento = (int) (precioProducto *0.20);
-        
-                 precioFinal = precioProducto- descuento;
+                    String percioString = String.valueOf(precioProducto);
+                    String PreciofinalString = Float.toString(precioFinal);
+
+                    txtVendido.setText(productoNombre);
+                    txtimporteInicial.setText(percioString);
+                    txtDescuento.setText("5%");
+                    txtimporteFinal.setText(PreciofinalString);
+                    
+                    JOptionPane.showMessageDialog(null,"Ingreso de producto se guardo correctamente: \n\n"+
+                                                   "Producto: "+productoNombre);
+
+                } else if (importeInicial >= 51 && importeInicial < 100) {
+                    
                  
-                 
-                String sqlAlta = "Insert INTO venta (producto,precio,cantidad,importe_final) values ('"+productoNombre+"', '"+precioProducto+"','"+cantidadProducto+"','"+precioFinal+"' )"; //variable objeto que lleva una instruccion de base de datos
-               
-                con = cn.getConnection();
-                st = con.createStatement();
-                st.executeUpdate(sqlAlta);
-                
-                
-                  
-        String percioString= String.valueOf(precioProducto);
-        String PreciofinalString = Float.toString(precioFinal);
-        
-                
-              
-                 txtVendido.setText(productoNombre);
-                 txtimporteInicial.setText(percioString);
-                 txtDescuento.setText("20%");
-                 txtimporteFinal.setText(PreciofinalString);
+                    
+                    precioProducto = precioProducto * cantidadProducto;
 
-        }
-        
-      
-                
-                
+                    descuento = (int) (precioProducto * 0.10);
+
+                    precioFinal = precioProducto - descuento;
+
+                    String sqlAlta = "Insert INTO venta (producto,precio,cantidad,importe_final) values ('" + productoNombre + "', '" + precioProducto + "','" + cantidadProducto + "','" + precioFinal + "' )"; //variable objeto que lleva una instruccion de base de datos
+
+                    con = cn.getConnection();
+                    st = con.createStatement();
+                    st.executeUpdate(sqlAlta);
+
+                    String percioString = String.valueOf(precioProducto);
+                    String PreciofinalString = Float.toString(precioFinal);
+
+                    txtVendido.setText(productoNombre);
+                    txtimporteInicial.setText(percioString);
+                    txtDescuento.setText("10%");
+                    txtimporteFinal.setText(PreciofinalString);
+                       JOptionPane.showMessageDialog(null,"Ingreso de producto se guardo correctamente: \n\n"+
+                                                   "Producto: "+productoNombre);
+
+                } else if (importeInicial >= 101) {
+                    precioProducto = precioProducto * cantidadProducto;
+
+                    descuento = (int) (precioProducto * 0.20);
+
+                    precioFinal = precioProducto - descuento;
+
+                    String sqlAlta = "Insert INTO venta (producto,precio,cantidad,importe_final) values ('" + productoNombre + "', '" + precioProducto + "','" + cantidadProducto + "','" + precioFinal + "' )"; //variable objeto que lleva una instruccion de base de datos
+
+                    con = cn.getConnection();
+                    st = con.createStatement();
+                    st.executeUpdate(sqlAlta);
+
+                    String percioString = String.valueOf(precioProducto);
+                    String PreciofinalString = Float.toString(precioFinal);
+
+                    txtVendido.setText(productoNombre);
+                    txtimporteInicial.setText(percioString);
+                    txtDescuento.setText("20%");
+                    txtimporteFinal.setText(PreciofinalString);
+                    
+                       JOptionPane.showMessageDialog(null,"Ingreso de producto se guardo correctamente: \n\n"+
+                                                   "Producto: "+productoNombre);
+
+                }
+
             }//termina else
 
         } catch (Exception e) { //inicia catch 2
-            
-            JOptionPane.showMessageDialog(null, "error base de datos\n " +e);
+
+            JOptionPane.showMessageDialog(null, "error base de datos\n " + e);
 
         }//termina catch 2
 
     }//termina try 2 
 
-    
     //inicia metodo limpiar 
     public void Limpiar() {
 
@@ -180,9 +161,9 @@ public class formulario extends javax.swing.JFrame {
         txtimporteInicial.setText(null);
         txtDescuento.setText(null);
         txtimporteFinal.setText(null);
-                
+
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -358,14 +339,14 @@ public class formulario extends javax.swing.JFrame {
 
     private void btnMostrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMostrarActionPerformed
         // TODO add your handling code here:
-        
+
         altaUsuarios();
     }//GEN-LAST:event_btnMostrarActionPerformed
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
 
         Limpiar();
-        
+
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void btnCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarActionPerformed
